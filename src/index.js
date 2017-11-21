@@ -1,113 +1,203 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import registerServiceWorker from './registerServiceWorker';
 
-function Square(props) {
-  return (
-    <button className="square" onClick={props.onClick}>
-      {props.value}
-    </button>
-  );
-}
+// material-ui import
+import theme from './style/theme';
+import Button from 'material-ui/Button';
+import { MuiThemeProvider } from 'material-ui/styles';
+import Typography from 'material-ui/Typography';
+import red from 'material-ui/colors';
 
-function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
-  }
-  return null;
-}
-
-class Board extends React.Component {
-  constructor(props) {
+/*class App extends React.Component{
+  constructor(props){
     super(props);
-    this.state = {
-      squares: Array(9).fill(null),
-      xIsNext: true,
-    };
+    this.state = {date: new Date()};
   }
 
-  handleClick(i) {
-    const squares = this.state.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
-      return;
-    }
-    squares[i] = this.state.xIsNext ? 'X' : 'O';
+  componentDidMount(){
+    this.timerID = setInterval(() => this.tick(), 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
+  tick(){
     this.setState({
-      squares: squares,
-      xIsNext: !this.state.xIsNext,
+      date: new Date()
     });
   }
 
-  renderSquare(i) {
-    return <Square value={this.state.squares[i]} onClick={() => this.handleClick(i)} />;
-  }
-
-  render() {
-    const winner = calculateWinner(this.state.squares);
-
-    let status;
-
-    if (winner){
-      status = 'Winner: ' + winner;
-    }else {
-      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-    }
-
-    return (
+  render(){
+    return(
       <div>
-        <div className="status">{status}</div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+      <h1>Hello, world!</h1>
+      <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
       </div>
     );
   }
-}
+}*/
 
-class Game extends React.Component {
+/*class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {lasers : true};
+  }
+
+  activateLasers = (e) => {
+    e.preventDefault();
+    this.setState(prevState => ({
+      lasers: !prevState.lasers
+    }));
+  }
+
   render() {
-    return (
-      <div className="game">
-        <div className="game-board">
-          <Board />
+    return(
+      <MuiThemeProvider theme={theme}>
+        <div>
+          <Button raised color="primary" onClick={this.activateLasers}>
+          {this.state.lasers ? 'ON' : 'OFF'}
+          </Button>
         </div>
-        <div className="game-info">
-          <div>{/* status */}</div>
-          <ol>{/* TODO */}</ol>
-        </div>
+      </MuiThemeProvider>
+    )
+  }
+}*/
+
+/*const Greetings = ({isLoggedIn}) => (
+  isLoggedIn ? <UserGreeting /> : <GuestGreeting />
+);
+
+const UserGreeting = ({}) => (
+   <Typography type="title" gutterBottom>
+     Welcome back!
+   </Typography>
+);
+
+
+const GuestGreeting = ({}) => (
+  <Typography type="title" gutterBottom>
+    Please sign up.
+  </Typography>
+);
+
+const LoginButton = ({onClick}) => (
+  <Button raised  onClick={onClick} color="primary">Login</Button>
+);
+
+const Logout = ({onClick}) => (
+  <Button raised  onClick={onClick} color="accent">Logout</Button>
+);
+
+class App extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = { isLoggedIn: false };
+  }
+
+  handleLogoutClick = (e) => {
+    e.preventDefault();
+    this.setState({
+      isLoggedIn : false
+    });
+  }
+
+  handleLoginClick = (e) => {
+    e.preventDefault();
+    this.setState({
+      isLoggedIn : true
+    });
+  }
+
+  render() {
+    return(
+      <MuiThemeProvider theme={theme}>
+        <Greetings isLoggedIn={this.state.isLoggedIn}/>
+          {this.state.isLoggedIn ? <Logout onClick={this.handleLogoutClick}/> : <LoginButton onClick={this.handleLoginClick} />}
+      </MuiThemeProvider>
+    )
+  }
+}*/
+
+const BoilingVerdict = ({celsius}) => (
+  <p>The water would {celsius < 100 && "not"} boil.</p>
+);
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {temperature: '0', scale: 'c'};
+  }
+
+  handleCelsiusChange = (temperature) => {
+    this.setState({
+      scale: 'c', temperature
+    });
+  }
+
+  handleFahrenheitChange = (temperature) => {
+    this.setState({
+      scale: 'f', temperature
+    });
+  }
+
+  toCelsius = (c) => {
+    return((parseFloat(c) * 9 / 5) + 32).toString();
+  }
+
+  toFahrenheit = (f) => {
+    return((parseFloat(f) - 32) * 5 / 9).toString();
+  }
+
+  render() {
+    const scale = this.state.scale;
+    const temperature = this.state.temperature;
+
+    const celsius = scale === 'f' ? this.toCelsius(temperature) : temperature;
+
+    const fahrenheit = scale === 'c' ? this.toFahrenheit(temperature) : temperature;
+    return(
+      <div>
+        <TemperatureInput scale="c" temperature={celsius}
+        onTemperatureChange={this.handleCelsiusChange}/>
+        <TemperatureInput scale="f" temperature={fahrenheit}
+        onTemperatureChange={this.handleFahrenheitChange}/>
+        <BoilingVerdict celsius={celsius}/>
       </div>
-    );
+    )
   }
 }
 
-// ========================================
+const scaleNames = {
+  c: 'Celsius',
+  f: 'Fahrenheit'
+};
+
+class TemperatureInput extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  handleChange = (e) => {
+    this.props.onTemperatureChange(e.target.value);
+  }
+
+  render() {
+    return(
+      <fieldset>
+        <legend>Enter temperature in {scaleNames[this.props.scale]};       </legend>
+        <input value={this.props.temperature} onChange={this.handleChange} />
+      </fieldset>
+    )
+  }
+}
+
+const element = <App/>;
 
 ReactDOM.render(
-  <Game />,
+  element,
   document.getElementById('root')
 );
+
+registerServiceWorker();
